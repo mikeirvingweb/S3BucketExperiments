@@ -25,3 +25,7 @@ Created alongside the [Camera Experiments](https://github.com/mikeirvingweb/Came
 ### Contributions
 
 🍴 Feel free to Fork / Branch / Modify, raise any Pull Requests for changes.
+
+#### Further reading  
+
+🦔 Built as part of [.NET, IoT and Hedgehogs!](https://www.mike-irving.co.uk/web-design-blog/?blogid=122)
