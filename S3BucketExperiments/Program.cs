@@ -82,17 +82,17 @@ class Files
 
             foreach (string manualFolderSubFolder in Directory.EnumerateDirectories(manualFolder))
             {
-                var subFolderName = manualFolderSubFolder.Split("\\").Last().ToLower();
+                var subFolderName = manualFolderSubFolder.Split("/").Last().Split("\\").Last().ToLower();
 
                 if(subFolderName == "approved")
                 {
                     foreach (string file in Directory.EnumerateFiles(manualFolderSubFolder))
                     {
-                        if(!file.Split("\\").Last().StartsWith("202"))
+                        if(!file.Split("/").Last().StartsWith("202"))
                         {
-                            var newFileName = File.GetLastWriteTime(file).ToString("yyyy-MM-dd-HH-mm-ss") + "_" + manualFolder.Split("\\").Last().Replace(" ", "-") + "_" + file.Split("\\").Last().Replace("_", "-");
+                            var newFileName = File.GetLastWriteTime(file).ToString("yyyy-MM-dd-HH-mm-ss") + "_" + manualFolder.Split("/").Last().Replace(" ", "-") + "_" + file.Split("/").Last().Replace("_", "-");
 
-                            File.Move(file, manualFolderSubFolder + "\\" + newFileName);
+                            File.Move(file, manualFolderSubFolder + "/" + newFileName);
                         }                        
                     }
                     
@@ -102,11 +102,11 @@ class Files
                 {
                     foreach (string file in Directory.EnumerateFiles(manualFolderSubFolder))
                     {
-                        if (!file.Split("\\").Last().StartsWith("202"))
+                        if (!file.Split("/").Last().StartsWith("202"))
                         {
-                            var newFileName = File.GetLastWriteTime(file).ToString("yyyy-MM-dd-HH-mm-ss") + "_" + manualFolder.Split("\\").Last().Replace(" ", "-") + "_" + file.Split("\\").Last().Replace("_", "-");
+                            var newFileName = File.GetLastWriteTime(file).ToString("yyyy-MM-dd-HH-mm-ss") + "_" + manualFolder.Split("/").Last().Replace(" ", "-") + "_" + file.Split("/").Last().Replace("_", "-");
 
-                            File.Move(file, manualFolderSubFolder + "\\" + newFileName);
+                            File.Move(file, manualFolderSubFolder + "/" + newFileName);
                         }
                     }
 
