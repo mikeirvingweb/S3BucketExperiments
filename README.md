@@ -22,6 +22,10 @@ Created alongside the [Camera Experiments](https://github.com/mikeirvingweb/Came
 `S3.DeleteObjectAsync` - Delete an Object.  
 `S3.MoveObjectAsync` - Copy then Delete an Object.  
 
+## 🪟 Windows  
+
+To execute, simply run `S3BucketExperiments.exe`.
+
 ## 🐧 Linux
 
 To run, you will need AWS Credentials in place, i.e. in `~/.aws/credentials`
