@@ -22,6 +22,18 @@ Created alongside the [Camera Experiments](https://github.com/mikeirvingweb/Came
 `S3.DeleteObjectAsync` - Delete an Object.  
 `S3.MoveObjectAsync` - Copy then Delete an Object.  
 
+## 🐧 Linux
+
+To run, you will need AWS Credentials in place, i.e. in `~/.aws/credentials`
+
+You will need to add execute permissions on the the main executable.
+
+`chmod +x S3BucketExperiments`  
+
+Then to execute, run:  
+
+`sudo ./S3BucketExperiments`
+
 ### Contributions
 
 🍴 Feel free to Fork / Branch / Modify, raise any Pull Requests for changes.
