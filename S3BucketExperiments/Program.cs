@@ -82,39 +82,43 @@ class Files
 
             foreach (string manualFolderSubFolder in Directory.EnumerateDirectories(manualFolder))
             {
-                var subFolderName = manualFolderSubFolder.Split("/").Last().Split("\\").Last().ToLower();
+                var folderDelimeter = RuntimeInformation.IsOSPlatform(OSPlatform.Linux) ? "/" : "\\";
+
+                var manualFolderSubFolderSafe = RuntimeInformation.IsOSPlatform(OSPlatform.Linux)? manualFolderSubFolder.Replace("\\", "/") : manualFolderSubFolder;
+
+                var subFolderName = manualFolderSubFolderSafe.Split(folderDelimeter).Last().ToLower();
 
                 if(subFolderName == "approved")
                 {
-                    foreach (string file in Directory.EnumerateFiles(manualFolderSubFolder))
+                    foreach (string file in Directory.EnumerateFiles(manualFolderSubFolderSafe))
                     {
-                        if(!file.Split("/").Last().StartsWith("202"))
+                        if(!file.Split(folderDelimeter).Last().StartsWith("202"))
                         {
-                            var newFileName = File.GetLastWriteTime(file).ToString("yyyy-MM-dd-HH-mm-ss") + "_" + manualFolder.Split("/").Last().Replace(" ", "-") + "_" + file.Split("/").Last().Replace("_", "-");
+                            var newFileName = File.GetLastWriteTime(file).ToString("yyyy-MM-dd-HH-mm-ss") + "_" + manualFolder.Split(folderDelimeter).Last().Replace(" ", "-") + "_" + file.Split(folderDelimeter).Last().Replace("_", "-");
 
-                            File.Move(file, manualFolderSubFolder + "/" + newFileName);
+                            File.Move(file, manualFolderSubFolderSafe + folderDelimeter + newFileName);
                         }                        
                     }
                     
-                    await Files.UploadAllFilesInFolder(client, bucketName, String.Empty, manualFolderSubFolder, fileTypes, true);
+                    await Files.UploadAllFilesInFolder(client, bucketName, String.Empty, manualFolderSubFolderSafe, fileTypes, true);
                 }
                 else if (subFolderName == "unapproved")
                 {
-                    foreach (string file in Directory.EnumerateFiles(manualFolderSubFolder))
+                    foreach (string file in Directory.EnumerateFiles(manualFolderSubFolderSafe))
                     {
-                        if (!file.Split("/").Last().StartsWith("202"))
+                        if (!file.Split(folderDelimeter).Last().StartsWith("202"))
                         {
-                            var newFileName = File.GetLastWriteTime(file).ToString("yyyy-MM-dd-HH-mm-ss") + "_" + manualFolder.Split("/").Last().Replace(" ", "-") + "_" + file.Split("/").Last().Replace("_", "-");
+                            var newFileName = File.GetLastWriteTime(file).ToString("yyyy-MM-dd-HH-mm-ss") + "_" + manualFolder.Split(folderDelimeter).Last().Replace(" ", "-") + "_" + file.Split(folderDelimeter).Last().Replace("_", "-");
 
-                            File.Move(file, manualFolderSubFolder + "/" + newFileName);
+                            File.Move(file, manualFolderSubFolderSafe + folderDelimeter + newFileName);
                         }
                     }
 
-                    await Files.UploadAllFilesInFolder(client, bucketName, unapprovedFolderName, manualFolderSubFolder, fileTypes, true);
+                    await Files.UploadAllFilesInFolder(client, bucketName, unapprovedFolderName, manualFolderSubFolderSafe, fileTypes, true);
                 }
                 else if (subFolderName == "automated")
                 {
-                    await Files.UploadAllFilesInFolder(client, bucketName, unapprovedFolderName, manualFolderSubFolder, fileTypes, true);
+                    await Files.UploadAllFilesInFolder(client, bucketName, unapprovedFolderName, manualFolderSubFolderSafe, fileTypes, true);
                 }
             }
         }
