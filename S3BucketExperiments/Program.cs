@@ -1,6 +1,8 @@
 ﻿using Amazon;
+using Amazon.Lambda;
 using Amazon.S3;
 using Amazon.S3.Model;
+using System.Runtime.InteropServices;
 using System.Text.Json;
 
 string bucketName = "bucket-name", uploadFolder = "folder-name";
@@ -13,11 +15,28 @@ string localFilePath = @"local-file-path";
 
 IAmazonS3 s3Client = new AmazonS3Client(RegionEndpoint.EUWest2);
 
+//await Files.UploadAllFilesInFolder(s3Client, bucketName, uploadFolder, localFilePath, fileTypes, true);
+
 await Files.UploadAllFilesInAllFolders(s3Client, bucketName, uploadFolder, localFilePath, fileTypes, true);
 
-await Files.CreateFileListAsJSON(s3Client, bucketName, "", "videos.json", s3URL, new String[] { "mp4" });
+//await S3.UploadObjectFromFileAsync(s3Client, bucketName, uploadFolder, "test-upload.txt", localFilePath + "\test-upload.txt", "text/plain");
 
-await Files.CreateFileListAsJSON(s3Client, bucketName, uploadFolder, "upload.json", s3URL, new String[] { "mp4" });
+//var list = await S3.ListingObjectsAsync(s3Client, bucketName, "", fileTypes);
+
+
+//await S3.CopyObjectAsync(s3Client, uploadFolder + "/" + "2022-10-02-09-03-22_Ceyomur-CY95_VD-00001.MP4", "2022-10-02-09-03-22_Ceyomur-CY95_VD-00001.MP4", bucketName, bucketName);
+//await S3.DeleteObjectAsync(s3Client, uploadFolder + "/" + "2022-10-02-09-03-22_Ceyomur-CY95_VD-00001.MP4", bucketName);
+
+//await S3.MoveObjectAsync(s3Client, uploadFolder + "/" + "/2022-10-02-09-03-22_Ceyomur-CY95_VD-00001.MP4", "2022-10-02-09-03-22_Ceyomur-CY95_VD-00001.MP4", bucketName, bucketName);
+
+
+// now doing this by executing remote lambda,
+//await Files.CreateFileListAsJSON(s3Client, bucketName, "", "20", "videos.json", s3URL, new String[] { "mp4" });
+//await Files.CreateFileListAsJSON(s3Client, bucketName, uploadFolder, "", "upload.json", s3URL, new String[] { "mp4" });
+
+Thread.Sleep(5000);
+
+Console.WriteLine("done");
 
 class JSONFileInfo
 {
@@ -124,9 +143,9 @@ class Files
         }
     }
 
-    public static async Task CreateFileListAsJSON(IAmazonS3 client, string bucketName, string folderName, string fileName, string s3URL, string[]? fileTypes)
+    public static async Task CreateFileListAsJSON(IAmazonS3 client, string bucketName, string folderName, string prefix, string fileName, string s3URL, string[]? fileTypes)
     {
-        var list = (await S3.ListingObjectsAsync(client, bucketName, folderName, fileTypes)).OrderByDescending(i => i);
+        var list = (await S3.ListingObjectsAsync(client, bucketName, folderName, prefix, fileTypes)).OrderByDescending(i => i);
 
         var fileInfoList = new List<JSONFileInfo>();
         
@@ -160,7 +179,7 @@ class Files
 
 class S3
 {
-    public static async Task<List<string>> ListingObjectsAsync(IAmazonS3 client, string bucketName, string folderName, string[]? fileTypes)
+    public static async Task<List<string>> ListingObjectsAsync(IAmazonS3 client, string bucketName, string folderName, string prefix, string[]? fileTypes)
     {
         var list = new List<string>();
 
@@ -170,7 +189,7 @@ class S3
             {
                 BucketName = bucketName,
                 MaxKeys = 5,
-                Prefix = (String.IsNullOrEmpty(folderName) ? "" : folderName + "/")
+                Prefix = (String.IsNullOrEmpty(folderName) ? "" : folderName + "/") + prefix
             };
 
             var response = new ListObjectsV2Response();
