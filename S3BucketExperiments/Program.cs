@@ -111,7 +111,7 @@ class Files
                 {
                     foreach (string file in Directory.EnumerateFiles(manualFolderSubFolderSafe))
                     {
-                        if(!file.Split(folderDelimeter).Last().StartsWith("202"))
+                        if(!(file.Split(folderDelimeter).Last().StartsWith("202") && file.Length > 20))
                         {
                             var newFileName = File.GetLastWriteTime(file).ToString("yyyy-MM-dd-HH-mm-ss") + "_" + manualFolder.Split(folderDelimeter).Last().Replace(" ", "-") + "_" + file.Split(folderDelimeter).Last().Replace("_", "-");
 
@@ -125,7 +125,7 @@ class Files
                 {
                     foreach (string file in Directory.EnumerateFiles(manualFolderSubFolderSafe))
                     {
-                        if (!file.Split(folderDelimeter).Last().StartsWith("202"))
+                        if (!(file.Split(folderDelimeter).Last().StartsWith("202") && file.Length > 20))
                         {
                             var newFileName = File.GetLastWriteTime(file).ToString("yyyy-MM-dd-HH-mm-ss") + "_" + manualFolder.Split(folderDelimeter).Last().Replace(" ", "-") + "_" + file.Split(folderDelimeter).Last().Replace("_", "-");
 
