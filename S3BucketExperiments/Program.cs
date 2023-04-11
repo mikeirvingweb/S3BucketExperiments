@@ -111,10 +111,13 @@ class Files
                 {
                     foreach (string file in Directory.EnumerateFiles(manualFolderSubFolderSafe))
                     {
+                        if (!(file.Split(folderDelimeter).Last().Contains("_" + manualFolder.Split(folderDelimeter).Last().Replace(" ", "-") + "_")))
+                        {
                             var newFileName = File.GetLastWriteTime(file).ToString("yyyy-MM-dd-HH-mm-ss") + "_" + manualFolder.Split(folderDelimeter).Last().Replace(" ", "-") + "_" + file.Split(folderDelimeter).Last().Replace("_", "-");
 
                             File.Move(file, manualFolderSubFolderSafe + folderDelimeter + newFileName);
                         }                        
+                    }
                     
                     await Files.UploadAllFilesInFolder(client, bucketName, String.Empty, manualFolderSubFolderSafe, fileTypes, true);
                 }
@@ -122,10 +125,13 @@ class Files
                 {
                     foreach (string file in Directory.EnumerateFiles(manualFolderSubFolderSafe))
                     {
+                        if (!(file.Split(folderDelimeter).Last().Contains("_" + manualFolder.Split(folderDelimeter).Last().Replace(" ", "-") + "_")))
+                        {
                             var newFileName = File.GetLastWriteTime(file).ToString("yyyy-MM-dd-HH-mm-ss") + "_" + manualFolder.Split(folderDelimeter).Last().Replace(" ", "-") + "_" + file.Split(folderDelimeter).Last().Replace("_", "-");
 
                             File.Move(file, manualFolderSubFolderSafe + folderDelimeter + newFileName);
                         }
+                    }
 
                     await Files.UploadAllFilesInFolder(client, bucketName, unapprovedFolderName, manualFolderSubFolderSafe, fileTypes, true);
                 }
