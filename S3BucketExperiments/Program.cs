@@ -10,7 +10,7 @@ string bucketName = "bucket-name", uploadFolder = "folder-name";
 
 string s3URL = "https://" + bucketName + ".s3.amazonaws.com/";
 
-var fileTypes = new String[] { "mp4", "txt" };
+var fileTypes = new String[] { "mp4", "avi", "txt" };
 
 string localFilePath = @"local-file-path";
 
